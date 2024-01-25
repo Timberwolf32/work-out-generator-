@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Planner</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body.dark-mode {
+            --tw-bg-opacity: 1;
+            background-color: rgba(17, 24, 39, var(--tw-bg-opacity));
+        }
+        body.dark-mode .text-white {
+            --tw-text-opacity: 1;
+            color: rgba(255, 255, 255, var(--tw-text-opacity));
+        }
+        body.dark-mode .bg-white {
+            --tw-bg-opacity: 1;
+            background-color: rgba(55, 65, 81, var(--tw-bg-opacity));
+        }
+    </style>
+</head>
+<body class="bg-gray-200 min-h-screen flex items-center justify-center dark-mode">
+    <button id="toggle-mode" class="absolute top-0 right-0 m-6 bg-blue-500 text-white px-6 py-2 rounded">Toggle Mode</button>
+    <div class="bg-white p-10 rounded shadow-lg w-1/2 text-white">
+        <h2 class="text-2xl mb-4">Workout Planner</h2>
+        <form id="workout-form">
+            <label for="prompt" class="block mb-2">Enter your prompt:</label>
+            <input type="text" id="prompt" class="w-full p-2 mb-6 rounded border shadow-inner">
+            <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded">Submit</button>
+        </form>
+        <table id="result" class="mt-6 w-full text-left"></table>
+    </div>
+
+    <script>
+        document.getElementById('toggle-mode').addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+        });
+
+        document.getElementById('workout-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const prompt = document.getElementById('prompt').value;
+            let workoutPlan = '';
+
+            if (prompt.toLowerCase().includes('cardio')) {
+                workoutPlan = 'You should do 30 minutes of running.';
+            } else if (prompt.toLowerCase().includes('strength')) {
+                workoutPlan = 'You should do weight lifting.';
+            } else if (prompt.toLowerCase().includes('flexibility')) {
+                workoutPlan = 'You should do yoga.';
+            } else {
+                workoutPlan = [
+                    ['Warm-up', 'Start with a 5-10 minute light cardio warm-up. This could be a brisk walk or a light jog.'],
+                    ['Bench Press', 'Start with a weight that you\'re comfortable with. Do 3 sets of 8-10 reps. Make sure to keep your feet flat on the ground and your back flat against the bench.'],
+                    ['Incline Dumbbell Press', 'This will target your upper chest and shoulders. Do 3 sets of 8-10 reps.'],
+                    ['Seated Cable Row', 'This exercise will help strengthen your back without putting too much strain on it. Do 3 sets of 10-12 reps.'],
+                    ['Dumbbell Pullover', 'This exercise will work your chest and back. Do 3 sets of 10-12 reps.'],
+                    ['Cool Down', 'Finish with a 5-minute cool-down and some light stretching.']
+                ];
+            }
+
+            const result = document.getElementById('result');
+            result.innerHTML = '';
+            if (Array.isArray(workoutPlan)) {
+                workoutPlan.forEach(function([exercise, description]) {
+                    const row = document.createElement('tr');
+                    const exerciseCell = document.createElement('td');
+                    exerciseCell.textContent = exercise;
+                    const descriptionCell = document.createElement('td');
+                    descriptionCell.textContent = description;
+                    row.appendChild(exerciseCell);
+                    row.appendChild(descriptionCell);
+                    result.appendChild(row);
+                });
+            } else {
+                const row = document.createElement('tr');
+                const cell = document.createElement('td');
+                cell.textContent = workoutPlan;
+                row.appendChild(cell);
+                result.appendChild(row);
+            }
+        });
+    </script>
+</body>
+</html>
